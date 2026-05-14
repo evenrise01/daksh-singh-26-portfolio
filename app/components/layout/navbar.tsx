@@ -38,8 +38,47 @@ function useClock() {
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
+  const imgRef = useRef<HTMLElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const { time, colonVisible } = useClock();
+
+  // ── Theme switching via IntersectionObserver ──
+  useEffect(() => {
+    const header = navRef.current;
+    const img = imgRef.current;
+    if (!header || !img) return;
+
+    const sections = document.querySelectorAll<HTMLElement>("[data-theme]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const theme = (entry.target as HTMLElement).dataset.theme;
+          if (theme === "light") {
+            header.classList.add("header-light");
+            img.classList.add("nav-logo-light");
+            img.classList.remove("nav-logo-dark");
+            header.classList.remove("header-black");
+          } else {
+            header.classList.remove("header-light");
+            img.classList.add("nav-logo-dark");
+            img.classList.remove("nav-logo-light");
+            header.classList.add("header-black");
+          }
+        });
+      },
+      {
+        // Shrink the observation window to just the navbar height
+        // so the trigger fires exactly when a section slides under it
+        rootMargin: `-${navRef.current?.offsetHeight - 40 ?? 0}px 0px -95% 0px`,
+        threshold: 0,
+      },
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   useGSAP(
     () => {
@@ -166,9 +205,14 @@ export default function Navbar() {
           <Link
             href={"/"}
             aria-label="home"
-            className="header-logo flex svg-wrapper overflow-hidden"
+            className="header-logo flex svg-wrapper nav-logo overflow-hidden"
           >
-            <img src="logo-wordmark.svg" alt="" className="h-6 w-auto" />
+            <img
+              ref={imgRef}
+              src="logo-wordmark.svg"
+              alt=""
+              className="h-6 w-auto"
+            />
           </Link>
         </div>
 

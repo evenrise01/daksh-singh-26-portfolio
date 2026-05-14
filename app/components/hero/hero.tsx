@@ -29,11 +29,7 @@ const Hero = () => {
             <div className="cover-home-image-prlx absolute top-0 left-0 h-full w-full">
               <div className="image w-full h-full">
                 <figure>
-                  <img
-                    src="/home-cover-test.jpg"
-                    alt=""
-                    className="h-full"
-                  />
+                  <img src="/home-cover-test.jpg" alt="" className="h-full" />
                 </figure>
               </div>
               <div className="absolute top-0 left-0 h-full w-full bg-black/25"></div>
