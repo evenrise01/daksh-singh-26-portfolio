@@ -62,7 +62,7 @@ const About = () => {
       <div className="col-span-full mb-32! md:mt-82! md:mb-72!">
         <div className="title block md:-mt-36 lg:-mt-42 xl:-mt-48">
           <span className="inline-block md:w-[808px] xl:w-[624px] max-md:hidden" />
-          <h2 className="offset-title inline w-full text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[110%] font-bold tracking-tight">
+          <h2 className="offset-title inline w-full text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[110%] font-bold tracking-tighter">
             Daksh Singh is a Jaipur-based designer and developer who moves
             fluidly between brand thinking, product craft, and frontend
             engineering — building things that look considered and work
