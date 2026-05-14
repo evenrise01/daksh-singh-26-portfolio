@@ -82,17 +82,14 @@ export default function BlockTextReveal({
         tl.to(block, {
           scaleX: 1,
           duration: duration ?? 0.75,
-          ease: "power4.inOut",
+          ease: "power3.inOut",
         });
         tl.set(line, { opacity: 1 });
         tl.set(block, { transformOrigin: "right center" });
         tl.to(block, {
           scaleX: 0,
           duration: duration ?? 0.75,
-          ease: "power4.inOut",
-          onStart: () => {
-            console.log("Block reversed", block);
-          }
+          ease: "power3.inOut",
         });
 
         return tl;
