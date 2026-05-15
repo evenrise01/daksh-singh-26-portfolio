@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useLockScroll } from "@/app/hooks/useLockScroll";
 
 gsap.registerPlugin(useGSAP);
 
@@ -41,8 +42,11 @@ export default function Navbar() {
   const imgRef = useRef<HTMLElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const { time, colonVisible } = useClock();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // ── Theme switching via IntersectionObserver ──
+  useLockScroll(menuOpen);
+
+  // ── Theme switching (unchanged) ──────────────────────────
   useEffect(() => {
     const header = navRef.current;
     const img = imgRef.current;
@@ -69,8 +73,6 @@ export default function Navbar() {
         });
       },
       {
-        // Shrink the observation window to just the navbar height
-        // so the trigger fires exactly when a section slides under it
         rootMargin: `-${navRef.current?.offsetHeight - 40 ?? 0}px 0px -95% 0px`,
         threshold: 0,
       },
@@ -80,6 +82,7 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  // ── GSAP menu animation ──────────────────────────────────
   useGSAP(
     () => {
       const menuToggle = navRef.current?.querySelector(".header-toggler");
@@ -107,60 +110,35 @@ export default function Navbar() {
       )
         return;
 
-      // ── Set initial states ──────────────────────────────
-      // Menu links start clipped below their overflow-hidden parent
       gsap.set(menuLinks, { yPercent: 115 });
-      // Socials start invisible
       gsap.set(socials, { autoAlpha: 0, y: 8 });
-      // "Close" text starts offset so it can animate in
       gsap.set(togglerClose, { yPercent: 110, opacity: 0 });
 
-      // ── Build the open timeline, paused ─────────────────
       tlRef.current = gsap.timeline({
         paused: true,
         defaults: { ease: "power4.inOut" },
       });
 
       tlRef.current
-        // 1. Overlay wipes down
         .to(headerOverlay, {
           clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
           duration: 1,
         })
-        // 2. "Menu" text exits upward — starts with overlay
         .to(
           togglerMenu,
-          {
-            yPercent: -110,
-            opacity: 0,
-            duration: 0.4,
-            ease: "power3.in",
-          },
+          { yPercent: -110, opacity: 0, duration: 0.4, ease: "power3.in" },
           "<0.1",
         )
-        // 3. "Close" text reveals from below
         .to(
           togglerClose,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.45,
-            ease: "power3.out",
-          },
+          { yPercent: 0, opacity: 1, duration: 0.45, ease: "power3.out" },
           "<0.15",
         )
-        // 4. Nav links stagger up through their overflow-hidden clip
         .to(
           menuLinks,
-          {
-            yPercent: 0,
-            duration: 0.65,
-            ease: "power3.out",
-            stagger: 0.07,
-          },
+          { yPercent: 0, duration: 0.65, ease: "power3.out", stagger: 0.07 },
           "-=0.55",
         )
-        // 5. Socials fade up last
         .to(
           socials,
           {
@@ -173,19 +151,21 @@ export default function Navbar() {
           "-=0.3",
         );
 
-      // ── Click handler — play / reverse the same timeline ─
+      // ← onReverseComplete: set menuOpen false AFTER animation settles
+      tlRef.current.eventCallback("onReverseComplete", () => {
+        setMenuOpen(false);
+      });
+
       const handleClick = () => {
-        if (tlRef.current?.isActive()) return; // guard during animation
+        if (tlRef.current?.isActive()) return;
 
         if (tlRef.current?.progress() === 0) {
+          setMenuOpen(true); // ← locks scroll via useLockScroll
           tlRef.current.play();
-          document.body.style.overflow = "hidden";
         } else {
           tlRef.current?.reverse();
-          // restore scroll after reverse completes
-          tlRef.current?.eventCallback("onReverseComplete", () => {
-            document.body.style.overflow = "";
-          });
+          // menuOpen → false fires in onReverseComplete above
+          // useLockScroll reacts and calls lenis.start()
         }
       };
 
@@ -194,7 +174,6 @@ export default function Navbar() {
     },
     { scope: navRef },
   );
-
   return (
     <>
       <header

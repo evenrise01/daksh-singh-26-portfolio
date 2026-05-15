@@ -10,23 +10,22 @@ import About from "./components/home/about";
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  
   return (
     <>
-      <ReactLenis root />
-      {/* <div id="app"> */}
-      <Navbar />
-      <main id="main" data-taxi>
-        <div data-taxi-view>
-          <div className="home">
-            <div>
-              <section data-theme="dark">
-                <Hero />
-              </section>
-              <section data-theme="light">
-                <About />
-              </section>
-              {/* <section className="flex items-center justify-center h-screen w-full">
+      <ReactLenis root options={{ duration: 1.2 }}>
+        <div id="app">
+          <Navbar />
+          <main id="main" data-taxi>
+            <div data-taxi-view>
+              <div className="home">
+                <div>
+                  <section data-theme="dark">
+                    <Hero />
+                  </section>
+                  <section data-theme="light">
+                    <About />
+                  </section>
+                  {/* <section className="flex items-center justify-center h-screen w-full">
             <div className="flex gap-6">
               <BlockTextReveal animateOnScroll blockColor="#78c98f">
                 <p className="w-[300px] text-wrap text-3xl font-semibold">
@@ -47,11 +46,12 @@ export default function Home() {
               </BlockTextReveal>
             </div>
           </section> */}
+                </div>
+              </div>
             </div>
-          </div>
+          </main>
         </div>
-      </main>
-      {/* </div> */}
+      </ReactLenis>
     </>
   );
 }
