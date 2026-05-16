@@ -6,6 +6,7 @@ import ReactLenis from "lenis/react";
 import BlockTextReveal from "./components/animations/blockTextReveal";
 import { useRef } from "react";
 import About from "./components/home/about";
+import FeaturedWork from "./components/home/featured-work";
 
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -24,6 +25,9 @@ export default function Home() {
                   </section>
                   <section data-theme="light">
                     <About />
+                  </section>
+                  <section className="h-screen w-full relative" data-theme="light">
+                    <FeaturedWork />
                   </section>
                   {/* <section className="flex items-center justify-center h-screen w-full">
             <div className="flex gap-6">
