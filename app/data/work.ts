@@ -1,28 +1,32 @@
 export const work = [
   {
     title: "GoEddie",
-    description:
-      "AI Edtech focused on bringing all round self-study for students in India.",
+    services: ["Product Design", "Frontend Engineering", "Design System"],
     image: "/work/1.jpg",
     href: "/work/goeddie",
   },
   {
-    title: "Prisma",
-    description: "Prsimse for the win all the tyear teaofnasd",
+    title: "Prisma UI",
+    services: ["Creative Direction", "UI Design", "Motion Design"],
     image: "/work/2.jpg",
-    href: "",
+    href: "/work/prisma",
   },
   {
     title: "TypeScript Course",
-    description: "The best typesctipt courtse",
+    services: ["Art Direction", "Curriculum Design", "Web Development"],
     image: "/work/3.jpg",
-    href: "",
+    href: "/work/typescript-course",
   },
   {
-    title: "Ai Seekho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
+    title: "AI Seekho",
+    services: ["Product Strategy", "UX Research", "Brand Identity"],
     image: "/work/4.jpg",
-    href: "",
+    href: "/work/ai-seekho",
   },
+//   {
+//     title: "VibeBank",
+//     services: ["Brand Design", "App Design", "Interaction Design"],
+//     image: "/work/5.jpg",
+//     href: "/work/vibebank",
+//   },
 ];

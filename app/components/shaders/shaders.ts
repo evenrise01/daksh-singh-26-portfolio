@@ -45,8 +45,8 @@ export const fragmentShader = `
   }
 
   void main() {
-    vec2 boxMin = mix(vec2(0.25, 0.175), vec2(0.0), uMobile);
-    vec2 boxMax = mix(vec2(0.75, 0.825), vec2(1.0), uMobile);
+vec2 boxMin = mix(vec2(0.15, 0.05), vec2(0.0), uMobile);  // ← tune these
+vec2 boxMax = mix(vec2(0.85, 0.95), vec2(1.0), uMobile);  // ← tune these
 
     float aspectRatio = uResolution.y / uResolution.x;
 

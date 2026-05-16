@@ -26,7 +26,7 @@ export default function Home() {
                   <section data-theme="light">
                     <About />
                   </section>
-                  <section className="h-screen w-full relative" data-theme="light">
+                  <section className="w-full relative" data-theme="light">
                     <FeaturedWork />
                   </section>
                   {/* <section className="flex items-center justify-center h-screen w-full">
