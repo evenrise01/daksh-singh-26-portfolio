@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Manrope} from "next/font/google";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { Lenis } from "lenis/react";
-
+import { ViewTransitions } from "next-view-transitions";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,15 +19,17 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Daksh Singh | Design Director and Developer - Web and Brand Design Specialist",
-  description: "I combine strong intuition with data to create brand-first digital products that balance aesthetics with performance and creative storytelling.",
+  title:
+    "Daksh Singh | Design Director and Developer - Web and Brand Design Specialist",
+  description:
+    "I combine strong intuition with data to create brand-first digital products that balance aesthetics with performance and creative storytelling.",
   openGraph: {
-    title: "Daksh Singh | Design Director and Developer - Web and Brand Design Specialist",
-    description: "I combine strong intuition with data to create brand-first digital products that balance aesthetics with performance and creative storytelling.",
-    images: [
-      "/",
-    ],
-  }
+    title:
+      "Daksh Singh | Design Director and Developer - Web and Brand Design Specialist",
+    description:
+      "I combine strong intuition with data to create brand-first digital products that balance aesthetics with performance and creative storytelling.",
+    images: ["/"],
+  },
 };
 
 export default function RootLayout({
@@ -36,11 +38,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${manrope.variable} antialiased`}
-    >
-      <body>{children}</body>
-    </html>
+    <ViewTransitions>
+      <html lang="en" className={`${manrope.variable} antialiased`}>
+        <body>{children}</body>
+      </html>
+    </ViewTransitions>
   );
 }

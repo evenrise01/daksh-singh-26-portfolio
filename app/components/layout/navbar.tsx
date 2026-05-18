@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useLockScroll } from "@/app/hooks/useLockScroll";
-
-gsap.registerPlugin(useGSAP);
+import { useTransitionRouter } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 
 function useClock() {
   const [time, setTime] = useState({ h: "", m: "", ap: "" });
@@ -44,6 +44,34 @@ export default function Navbar() {
   const { time, colonVisible } = useClock();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const router = useTransitionRouter();
+  const pathname = usePathname();
+
+  function triggerPageTransition() {
+    document.documentElement.animate([
+      {
+        clipPath: "polygon(25% 75%, 75% 75%, 75% 75%, 25% 75%",
+      },
+      {
+        clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%",
+      },
+    ], 
+  {
+    duration: 2000,
+    easing: "cubic-bezier(0.9, 0, 0.1, 1)",
+    pseudoElement: "::view-transition-new(root)",
+  });
+  }
+
+  const handleNavigation = (path: string) => (e) => {
+    if (path === pathname){
+      e.preventDefault();
+      return;
+    }
+    router.push(path, {
+      onTransitionReady: triggerPageTransition,
+    });
+  }
   useLockScroll(menuOpen);
 
   // ── Theme switching (unchanged) ──────────────────────────
@@ -204,13 +232,13 @@ export default function Navbar() {
 
         <div className="col-span-7 flex justify-start -mb-4 max-xl:hidden">
           <div className="header-links list-o flex items-end overflow-hidden">
-            <Link href={"/works"} className="header-link list-o-item">
+            <Link href={"/work"} className="header-link list-o-item" onClick={handleNavigation("/work")}>
               Work
             </Link>
-            <Link href={"/process"} className="header-link list-o-item">
+            <Link href={"/process"} className="header-link list-o-item" onClick={handleNavigation("/process")}>
               Process
             </Link>
-            <Link href={"/about"} className="header-link list-o-item">
+            <Link href={"/about"} className="header-link list-o-item" onClick={handleNavigation("/about")}>
               About
             </Link>
           </div>
@@ -268,15 +296,16 @@ export default function Navbar() {
                     label: "Contact",
                   },
                 ].map(({ href, label }) => (
-                  <a
+                  <Link
                     key={label}
                     href={href}
                     className="overflow-hidden block leading-none py-1"
+                    onClick={handleNavigation(href)}
                   >
                     <span className="header-link-mobile inline-block">
                       {label}
                     </span>
-                  </a>
+                  </Link>
                 ))}
               </nav>
 

@@ -230,6 +230,44 @@ img {
   z-index: 1;
 }
 
+.transition-revealer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transform-origin: center top;
+  background-color: var(--brand-white);
+  pointer-events: none;
+  will-change: transform;
+  z-index: var(--z-index-loader);
+}
+
+::view-transition-old(root),::view-transition-new(root) {
+  animation: none !important;
+}
+
+::view-transition-group(root) {
+ z-index: auto !important;
+}
+
+::view-transition-image-pair(root){
+  isolation: isolate;
+  will-change: cip-path;
+z-index: 1;
+}
+
+::view-transition-new(root){
+  z-index: 10000;
+  animation: none !important;
+}
+
+::view-transition-old(root){
+  z-index: 1;
+  animation: none !important;
+}
+
+
 .svg-wrapper svg {
   width: 100%;
   height: 100%;
@@ -599,8 +637,9 @@ img {
   text-decoration: none;
   letter-spacing: 0.12em;
   font-size: var(--type-meta);
+  font-weight: 600;
   padding-bottom: 3px;
-  opacity: 0.5;
+  opacity: 0.7;
   transition: opacity 0.25s var(--ease-out);
 }
 
@@ -638,4 +677,414 @@ img {
     bottom: calc(50% - 55vh / 2 - 2rem);
     font-size: var(--type-title);
   }
+}
+/* ═══════════════════════════════════════════════════════════════════
+   VISIBILITY GATES
+   ═══════════════════════════════════════════════════════════════════ */
+
+.fw-desktop {
+  display: none;
+}
+
+.showcase-mobile {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 6rem 0 8rem;
+}
+
+@media (min-width: 768px) {
+  .showcase-mobile {
+    padding: 10rem 0 6rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .fw-desktop {
+    display: block; /* becomes h-screen relative via Tailwind on the element */
+  }
+  .showcase-mobile {
+    display: none;
+  }
+  .fw-viewall-desktop {
+    display: flex;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE CONTENT WRAPPER  →  styles_showcase_mobile_content__v_1SJ
+   flex column, clips overflow
+   ═══════════════════════════════════════════════════════════════════ */
+
+.showcase-mobile-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOP  →  styles_showcase_mobile__top__ozUBa
+   centered column, gap between index ghost + progress strip
+   ═══════════════════════════════════════════════════════════════════ */
+
+.showcase-mobile-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+@media (min-width: 768px) {
+  .showcase-mobile-top {
+    gap: 4.8rem;
+    margin-bottom: 4.8rem;
+  }
+}
+
+/* Ghost spacer that pushes content below any blend overlay */
+.section-index-ghost {
+  flex-shrink: 0;
+  height: 2rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROGRESS STRIP  →  styles_progress__1bFI9
+   ═══════════════════════════════════════════════════════════════════ */
+
+.progress {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-items {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+/* wrapper: column so thumb sits above the vertical line ghost */
+.progress-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* thumb button  →  styles_progress_item__zLLQX */
+.progress-item {
+  all: unset;
+  position: relative;
+  width: 3.5rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 0.2rem;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out);
+}
+
+.progress-item[aria-current="true"] {
+  outline: 1.5px solid var(--brand-black);
+  outline-offset: 2px;
+}
+
+.progress-item-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+/* vertical line ghost between thumbs  →  styles_progress_line_ghost__KZZI6 */
+.progress-line-ghost {
+  width: 0.1rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  /* purely structural spacer, transparent */
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CENTER  →  styles_showcase_mobile__center__cAdqP
+   images container
+   ═══════════════════════════════════════════════════════════════════ */
+
+.showcase-mobile-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  margin-bottom: 1.6rem;
+}
+
+@media (min-width: 768px) {
+  .showcase-mobile-center {
+    margin-bottom: 3.2rem;
+  }
+}
+
+/* images wrapper  →  styles_images__DeNH8 */
+.images-wrap {
+  --slide-width: min(37.5rem, 88%);
+  --slide-gap: 0.8rem;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .images-wrap {
+    --slide-width: min(52rem, 85%);
+    --slide-gap: 1.6rem;
+  }
+}
+
+/* track  →  styles_images_track__dMjPr
+   fromanother uses translate3d inline style, driven by JS.
+   We replicate: transform is set via JS as translate3d(Xpx,0,0)    */
+.images-track {
+  display: flex;
+  width: 100%;
+  backface-visibility: hidden;
+  touch-action: pan-y pinch-zoom;
+  /* transition handled by JS to match fromanother's 1.4s easeOutQuart */
+  transition: transform 1.4s var(--easeInOutQuart);
+  will-change: transform;
+}
+
+/* individual slide  →  styles_image_slide__dmTxw */
+.image-slide {
+  position: relative;
+  flex: 0 0 var(--slide-width);
+  min-width: 0;
+  margin-left: var(--slide-gap);
+}
+
+.image-slide:first-child {
+  margin-left: 0;
+}
+
+/* the <a> link + image  →  styles_image__LBdm0 */
+.image-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 319 / 250;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (min-width: 768px) {
+  .image-link {
+    aspect-ratio: 520 / 406;
+  }
+}
+
+.image-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BOTTOM  →  styles_showcase_mobile__bottom__BWZc2
+   ═══════════════════════════════════════════════════════════════════ */
+
+.showcase-mobile-bottom {
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTENTS (titles + services)  →  styles_contents__sXx5R
+   ═══════════════════════════════════════════════════════════════════ */
+
+.contents {
+  text-align: center;
+  padding: 0 var(--grid-margin);
+}
+
+/* title wrapper  →  styles_contents_title_wrapper__yVmtN */
+.contents-title-wrapper {
+  margin: 0 0 2.8rem;
+  display: block;
+  font: normal; /* reset h3 */
+}
+
+@media (min-width: 768px) {
+  .contents-title-wrapper {
+    margin: 0 0 4rem;
+  }
+}
+
+/* grid stack: all titles occupy same cell  →  styles_contents_titles__vW6Da */
+.contents-titles {
+  display: grid;
+}
+
+/* individual title  →  styles_contents_title__RHTMI */
+.contents-title {
+  grid-area: 1 / 1;
+  font-size: 3.2rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--brand-black);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 0;
+  /* HIDDEN state */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(0.8rem);
+  transition:
+    opacity 0.35s var(--easeOutQuart),
+    transform 0.35s var(--easeOutQuart),
+    visibility 0s var(--easeOutQuart) 0.35s;
+  will-change: opacity, transform;
+}
+
+@media (min-width: 768px) {
+  .contents-title {
+    font-size: 4.8rem;
+  }
+}
+
+/* ACTIVE title  →  styles_contents_title__active__EswSD */
+.contents-title-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition:
+    opacity 0.35s var(--easeOutQuart),
+    transform 0.35s var(--easeOutQuart),
+    visibility 0s var(--easeOutQuart) 0s;
+}
+
+/* services stack  →  styles_contents_services_stack__liYuQ */
+.contents-services-stack {
+  display: grid;
+}
+
+/* individual services block  →  styles_contents_services__jFOGT */
+.contents-services {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--brand-black);
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  /* HIDDEN state */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(0.8rem);
+  transition:
+    opacity 0.35s var(--easeOutQuart),
+    transform 0.35s var(--easeOutQuart),
+    visibility 0s var(--easeOutQuart) 0.35s;
+  will-change: opacity, transform;
+}
+
+@media (min-width: 768px) {
+  .contents-services {
+    font-size: 1.6rem;
+  }
+}
+
+/* ACTIVE services  →  styles_contents_services__active__hcCuS */
+.contents-services-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition:
+    opacity 0.35s var(--easeOutQuart),
+    transform 0.35s var(--easeOutQuart),
+    visibility 0s var(--easeOutQuart) 0s;
+}
+
+.contents-services-item {
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGINATION  →  styles_pagination__pyG7t
+   ═══════════════════════════════════════════════════════════════════ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--grid-margin);
+  margin-top: 2.8rem;
+}
+
+@media (min-width: 768px) {
+  .pagination {
+    margin-top: 4rem;
+  }
+}
+
+/* prev/next buttons  →  styles_pagination_btn__3W6do */
+.pagination-btn {
+  all: unset;
+  width: 4.8rem;
+  height: 4.8rem;
+  border: 0.1rem solid var(--brand-black);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s var(--ease-out);
+  color: var(--brand-black);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* view all link  →  styles_pagination_link__Ly4dt */
+.pagination-link {
+  flex: 1;
+  text-align: center;
+  color: var(--brand-black);
+  font-weight: 600;
+  font-size: var(--type-meta);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.pagination-link:hover {
+  opacity: 0.7;
 }

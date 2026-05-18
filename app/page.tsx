@@ -7,29 +7,31 @@ import BlockTextReveal from "./components/animations/blockTextReveal";
 import { useRef } from "react";
 import About from "./components/home/about";
 import FeaturedWork from "./components/home/featured-work";
+import { useIntroState } from "./hooks/useIntroState";
 
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { shouldShowIntro, checked, markIntroSeen } = useIntroState();
 
   return (
     <>
       <ReactLenis root options={{ duration: 1.2 }}>
-        <div id="app">
-          <Navbar />
-          <main id="main" data-taxi>
-            <div data-taxi-view>
-              <div className="home">
-                <div>
-                  <section data-theme="dark">
-                    <Hero />
-                  </section>
-                  <section data-theme="light">
-                    <About />
-                  </section>
-                  <section className="w-full relative" data-theme="light">
-                    <FeaturedWork />
-                  </section>
-                  {/* <section className="flex items-center justify-center h-screen w-full">
+        {/* <div id="app min-h-screen"> */}
+        <Navbar />
+        <main id="main" data-taxi>
+          <div data-taxi-view>
+            <div className="home">
+              <div>
+                <section data-theme="dark">
+                  <Hero />
+                </section>
+                <section data-theme="light">
+                  <About />
+                </section>
+                <section className="w-full relative" data-theme="light">
+                  <FeaturedWork />
+                </section>
+                {/* <section className="flex items-center justify-center h-screen w-full">
             <div className="flex gap-6">
               <BlockTextReveal animateOnScroll blockColor="#78c98f">
                 <p className="w-[300px] text-wrap text-3xl font-semibold">
@@ -50,11 +52,11 @@ export default function Home() {
               </BlockTextReveal>
             </div>
           </section> */}
-                </div>
               </div>
             </div>
-          </main>
-        </div>
+          </div>
+        </main>
+        {/* </div> */}
       </ReactLenis>
     </>
   );
