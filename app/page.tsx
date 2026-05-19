@@ -22,7 +22,7 @@ export default function Home() {
           <div data-taxi-view>
             <div className="home">
               <div>
-                <section data-theme="dark">
+                <section data-theme="light">
                   <Hero />
                 </section>
                 <section data-theme="light">

@@ -230,7 +230,7 @@ img {
   z-index: 1;
 }
 
-.preloader-overlay {
+/* .preloader-overlay {
   position: fixed;
   width: 100%;
   height: 100vh;
@@ -239,33 +239,80 @@ img {
   z-index: var(--z-index-loader);
   background-color: var(--brand-black);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+} */
+
+
+
+.preloader-content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-/* .preloader-content {
+.preloader-content .preloader-greeting {
+  /* position: absolute;
+  bottom: 30%;
+  left: 35%; */
+}
+
+.preloader-counter {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100%;
-  height: 100%;
-  
-} */
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 20px;
+  text-align: center;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  z-index: 0;
+}
 
-.preloader-overlay .preloader {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 0.5rem;
+.preloader-counter p {
+  position: relative;
+  display: block;
+  transform: translateY(20px);
+}
+
+.preloader-content .preloader {
+  /* position: absolute;
+  bottom: 20%;
+  left: 25%; */
+  width: 50vw;
+  height: 2px;
   background-color: var(--brand-orange);
-  transform: scaleX(0);
+  transform: scaleX(0) translateX(50%);
   transform-origin: left;
   will-change: transform;
 }
 
-.hero {
-  position: relative;
+.hero-container{
+  background-color: var(--brand-white);
+  color: var(--brand-black);
+}
+.hero-section {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
   width: 100%;
-  height: 100svh;
-  overflow: hidden;
+  height: 100vh;
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+  will-change: transform;
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--brand-black);
+  clip-path: polygon(0 100%, 100% 100%, 100% 0%, 0% 0%);
+  will-change: clip-path;
+  z-index: 2;
 }
 
 .intro-img {
@@ -306,6 +353,9 @@ img {
   }
 
   .hero-header {
+    width: 100%;
+  }
+  .preloader-content .preloader {
     width: 100%;
   }
 }
