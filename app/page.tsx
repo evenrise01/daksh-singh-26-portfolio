@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
 import Navbar from "./components/layout/navbar";
-import Hero from "./components/hero/hero";
 import ReactLenis from "lenis/react";
 import BlockTextReveal from "./components/animations/blockTextReveal";
 import { useRef } from "react";
 import About from "./components/home/about";
 import FeaturedWork from "./components/home/featured-work";
 import { useIntroState } from "./hooks/useIntroState";
+import Hero from "./components/home/hero";
 
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -17,7 +17,7 @@ export default function Home() {
     <>
       <ReactLenis root options={{ duration: 1.2 }}>
         {/* <div id="app min-h-screen"> */}
-        <Navbar />
+
         <main id="main" data-taxi>
           <div data-taxi-view>
             <div className="home">

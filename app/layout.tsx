@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { Lenis } from "lenis/react";
 import { ViewTransitions } from "next-view-transitions";
+import Navbar from "./components/layout/navbar";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -40,7 +41,10 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en" className={`${manrope.variable} antialiased`}>
-        <body>{children}</body>
+        <body>
+          <Navbar />
+          {children}
+        </body>
       </html>
     </ViewTransitions>
   );

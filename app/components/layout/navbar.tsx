@@ -48,30 +48,32 @@ export default function Navbar() {
   const pathname = usePathname();
 
   function triggerPageTransition() {
-    document.documentElement.animate([
+    document.documentElement.animate(
+      [
+        {
+          clipPath: "polygon(25% 75%, 75% 75%, 75% 75%, 25% 75%)",
+        },
+        {
+          clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)",
+        },
+      ],
       {
-        clipPath: "polygon(25% 75%, 75% 75%, 75% 75%, 25% 75%",
+        duration: 2000,
+        easing: "cubic-bezier(0.9, 0, 0.1, 1)",
+        pseudoElement: "::view-transition-new(root)",
       },
-      {
-        clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%",
-      },
-    ], 
-  {
-    duration: 2000,
-    easing: "cubic-bezier(0.9, 0, 0.1, 1)",
-    pseudoElement: "::view-transition-new(root)",
-  });
+    );
   }
 
   const handleNavigation = (path: string) => (e) => {
-    if (path === pathname){
+    if (path === pathname) {
       e.preventDefault();
       return;
     }
     router.push(path, {
       onTransitionReady: triggerPageTransition,
     });
-  }
+  };
   useLockScroll(menuOpen);
 
   // ── Theme switching (unchanged) ──────────────────────────
@@ -206,13 +208,14 @@ export default function Navbar() {
     <>
       <header
         ref={navRef}
-        className="header sticky top-0 left-0 grid-w content-end w-full h-header z-header subtitle"
+        className="header sticky top-0 left-0 grid-w items-center content-end w-full h-header z-header "
       >
         <div className="col-span-3 md:col-span-2">
           <Link
             href={"/"}
             aria-label="home"
-            className="header-logo flex svg-wrapper nav-logo overflow-hidden"
+            className="header-logo flex svg-wrapper nav-logo overflow-hidden "
+            onClick={handleNavigation("/")}
           >
             <img
               ref={imgRef}
@@ -232,13 +235,25 @@ export default function Navbar() {
 
         <div className="col-span-7 flex justify-start -mb-4 max-xl:hidden">
           <div className="header-links list-o flex items-end overflow-hidden">
-            <Link href={"/work"} className="header-link list-o-item" onClick={handleNavigation("/work")}>
+            <Link
+              href={"/work"}
+              className="header-link list-o-item"
+              onClick={handleNavigation("/work")}
+            >
               Work
             </Link>
-            <Link href={"/process"} className="header-link list-o-item" onClick={handleNavigation("/process")}>
+            <Link
+              href={"/process"}
+              className="header-link list-o-item"
+              onClick={handleNavigation("/process")}
+            >
               Process
             </Link>
-            <Link href={"/about"} className="header-link list-o-item" onClick={handleNavigation("/about")}>
+            <Link
+              href={"/about"}
+              className="header-link list-o-item"
+              onClick={handleNavigation("/about")}
+            >
               About
             </Link>
           </div>
@@ -276,7 +291,11 @@ export default function Navbar() {
                     aria-label="Home"
                     className="flex svg-wrapper overflow-hidden"
                   >
-                    <img src="logo-wordmark.svg" alt="" className="invert" />
+                    <img
+                      src="logo-wordmark.svg"
+                      alt=""
+                      className="invert h-6 w-auto"
+                    />
                   </a>
                 </div>
                 <div className="col-span-3 md:col-span-10 flex justify-end xl:hidden overflow-hidden">
