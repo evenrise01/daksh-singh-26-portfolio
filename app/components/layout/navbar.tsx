@@ -8,6 +8,16 @@ import { useLockScroll } from "@/app/hooks/useLockScroll";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 
+const SOCIALS = [
+  {
+    label: "Instagram",
+    href: "#",
+  },
+  {
+    label: "X",
+    href: "#",
+  },
+];
 function useClock() {
   const [time, setTime] = useState({ h: "", m: "", ap: "" });
   const [colonVisible, setColonVisible] = useState(true);
@@ -76,6 +86,34 @@ export default function Navbar() {
   };
   useLockScroll(menuOpen);
 
+  useGSAP(
+    () => {
+      // Set navbar invisible initially
+      gsap.set(navRef.current, { autoAlpha: 0, y: -10 });
+
+      // Poll for the signal (fires once Hero adds the class)
+      const observer = new MutationObserver(() => {
+        if (document.documentElement.classList.contains("is-ready")) {
+          observer.disconnect();
+          gsap.to(navRef.current, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+          });
+        }
+      });
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+
+      return () => observer.disconnect();
+    },
+    { scope: navRef },
+  );
+
   // ── Theme switching (unchanged) ──────────────────────────
   useEffect(() => {
     const header = navRef.current;
@@ -115,7 +153,12 @@ export default function Navbar() {
   // ── GSAP menu animation ──────────────────────────────────
   useGSAP(
     () => {
-      const menuToggle = navRef.current?.querySelector(".header-toggler");
+      const menuToggle =
+        navRef.current?.querySelector<HTMLElement>(".header-toggler");
+
+      const menuClose = navRef.current?.querySelector<HTMLElement>(
+        ".header-toggler-close",
+      );
       const headerOverlay =
         navRef.current?.querySelector<HTMLElement>(".header-overlay");
       const menuLinks = navRef.current?.querySelectorAll<HTMLElement>(
@@ -143,7 +186,7 @@ export default function Navbar() {
       gsap.set(menuLinks, { yPercent: 115 });
       gsap.set(socials, { autoAlpha: 0, y: 8 });
       gsap.set(togglerClose, { yPercent: 110, opacity: 0 });
-
+      gsap.set(".menu-rule", { scaleX: 0 });
       tlRef.current = gsap.timeline({
         paused: true,
         defaults: { ease: "power4.inOut" },
@@ -153,6 +196,7 @@ export default function Navbar() {
         .to(headerOverlay, {
           clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
           duration: 1,
+          pointerEvents: "all",
         })
         .to(
           togglerMenu,
@@ -163,6 +207,17 @@ export default function Navbar() {
           togglerClose,
           { yPercent: 0, opacity: 1, duration: 0.45, ease: "power3.out" },
           "<0.15",
+        )
+        .to(
+          ".menu-rule",
+          {
+            scaleX: 1,
+            autoAlpha: 1,
+            duration: 0.7,
+            ease: "power3.inOut",
+            transformOrigin: "left",
+          },
+          "-=0.5",
         )
         .to(
           menuLinks,
@@ -183,7 +238,12 @@ export default function Navbar() {
 
       // ← onReverseComplete: set menuOpen false AFTER animation settles
       tlRef.current.eventCallback("onReverseComplete", () => {
+        gsap.set(headerOverlay, { pointerEvents: "none" });
         setMenuOpen(false);
+      });
+
+      tlRef.current.eventCallback("onStart", () => {
+        gsap.set(headerOverlay, { pointerEvents: "all" });
       });
 
       const handleClick = () => {
@@ -199,8 +259,13 @@ export default function Navbar() {
         }
       };
 
-      menuToggle.addEventListener("click", handleClick);
-      return () => menuToggle.removeEventListener("click", handleClick);
+      menuToggle?.addEventListener("click", handleClick);
+      menuClose?.addEventListener("click", handleClick);
+
+      return () => {
+        menuToggle?.removeEventListener("click", handleClick);
+        menuClose?.removeEventListener("click", handleClick);
+      };
     },
     { scope: navRef },
   );
@@ -281,10 +346,10 @@ export default function Navbar() {
         </div>
 
         {/* ── Overlay — clip-path is the visibility mechanism ── */}
-        <div className="header-overlay fixed top-0 left-0 w-full h-full pointer-events-none xl:hidden">
-          <div className="header-menu fixed top-0 left-0 w-full h-full overflow-hidden xl:hidden">
-            <div className="header-menu-inner overflow-hidden w-full h-full absolute top-0 left-0 flex flex-col justify-center px-margin">
-              <div className="absolute top-0 left-0 w-full h-header grid-w content-end">
+        <div className="header-overlay fixed top-0 left-0 w-full h-screen pointer-events-none xl:hidden">
+          <div className="header-menu fixed top-0 left-0 w-full h-screen overflow-hidden xl:hidden">
+            <div className="header-menu-inner overflow-hidden px-margin">
+              <div className="absolute top-0 left-0 w-full h-header grid-w content-end justify-center items-center">
                 <div className="col-span-3 md:col-span-2">
                   <a
                     href="/"
@@ -294,17 +359,24 @@ export default function Navbar() {
                     <img
                       src="logo-wordmark.svg"
                       alt=""
-                      className="invert h-6 w-auto"
+                      className="h-6 w-auto"
                     />
                   </a>
                 </div>
                 <div className="col-span-3 md:col-span-10 flex justify-end xl:hidden overflow-hidden">
                   <div className="header-toggler-close">Close</div>
                 </div>
+                <div
+                  className="menu-rule w-full h-px mt-2 col-span-full"
+                  aria-hidden="true"
+                />
               </div>
 
               {/* Nav links — overflow-hidden on parent clips the yPercent slide */}
-              <nav className="flex flex-col gap-y-12 items-start hero">
+              <nav
+                className="flex flex-col gap-y-6 items-start hero"
+                aria-label="Mobile navigation"
+              >
                 {[
                   { href: "/", label: "Home" },
                   { href: "/works", label: "Work" },
@@ -318,7 +390,7 @@ export default function Navbar() {
                   <Link
                     key={label}
                     href={href}
-                    className="overflow-hidden block leading-none py-1"
+                    className="overflow-hidden block leading-none py-1 pr-1"
                     onClick={handleNavigation(href)}
                   >
                     <span className="header-link-mobile inline-block">
@@ -329,23 +401,32 @@ export default function Navbar() {
               </nav>
 
               {/* Socials */}
-              <div className="absolute left-margin right-margin bottom-20 flex gap-x-2">
-                <a
-                  href=""
-                  target="_blank"
-                  rel="noopener"
-                  className="header-social-link"
-                >
-                  Instagram,
-                </a>
-                <a
-                  href=""
-                  target="_blank"
-                  rel="noopener"
-                  className="header-social-link"
-                >
-                  Linkedin
-                </a>
+              <div className="absolute left-0 bottom-8 menu-meta flex items-end w-full px-margin justify-between">
+                {/* Socials */}
+                <div className="flex gap-x-4">
+                  {SOCIALS.map(({ href, label }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="menu-social meta opacity-50"
+                      tabIndex={menuOpen ? 0 : -1}
+                    >
+                      {label}
+                    </a>
+                  ))}
+                </div>
+
+                {/* Location + time */}
+                <div className="flex flex-col items-end gap-y-1">
+                  <span className="caption opacity-30 uppercase tracking-widest">
+                    Jaipur, IND
+                  </span>
+                  <span className="caption opacity-20 uppercase tracking-widest">
+                    {time.h}:{time.m} {time.ap}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Manrope } from "next/font/google";
+import {  Manrope, Syne, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import { Lenis } from "lenis/react";
 import { ViewTransitions } from "next-view-transitions";
 import Navbar from "./components/layout/navbar";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-cormorant-garamond",
   subsets: ["latin"],
 });
-
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
@@ -40,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className={`${manrope.variable} antialiased`}>
+      <html lang="en" className={`${manrope.variable} ${syne.variable} ${cormorantGaramond.variable} antialiased`}>
         <body>
           <Navbar />
           {children}

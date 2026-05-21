@@ -467,6 +467,7 @@ const FeaturedWork = () => {
         className="fw-desktop fw-section w-full h-screen relative"
       >
         <div className="fw-layout grid-w h-full items-center">
+          
           <div className="fw-index-col col-span-1 self-center">
             <div className="flex items-center gap-2 meta fw-index-label">
               <span ref={indexRef} className="tabular-nums">

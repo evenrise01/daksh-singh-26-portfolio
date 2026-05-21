@@ -67,7 +67,7 @@ export default function BlockTextReveal({
       });
 
       gsap.set(lines.current, { opacity: 0 });
-      gsap.set(blocks.current, { scaleX: 0,skewX:-15, transformOrigin: "left center" });
+      gsap.set(blocks.current, { scaleX: 0, transformOrigin: "left center" });
 
       // Explicit types on all three params — were implicitly `any`
       const createBlockRevealAnimation = (

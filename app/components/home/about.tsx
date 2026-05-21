@@ -1,4 +1,5 @@
 import React from "react";
+import BlockTextReveal from "../animations/blockTextReveal";
 
 const About = () => {
   return (
@@ -45,17 +46,18 @@ const About = () => {
       </div>
       <div className="col-span-full md:col-start-5 xl:col-start-7 md:col-end-11 max-md:order-first max-md:mb-52! flex flex-col justify-between">
         <div className="subtitle flex gap-x-10 uppercase">
-          <div className="subtitle-number overflow-hidden">01</div>
-          <div className="subtitle-text">About</div>
+          <BlockTextReveal animateOnScroll blockColor="#c9522a">
+            <div className="subtitle-number overflow-hidden">01</div>
+          </BlockTextReveal>
+          <BlockTextReveal animateOnScroll blockColor="#c9522a">
+            <div className="subtitle-text">About</div>
+          </BlockTextReveal>
         </div>
         <div className="wysiwyg w-full max-md:mt-24!">
           <p className="title">
-            I am a design director and developer who enjoys blending strong
-            intuition with data to create brand-first digital products. By
-            approaching design and development with a brand-first mindset, I
-            ensure that every pixel, interaction, and system element reinforces
-            the brand's story, strengthens its position in the market, and
-            drives measurable business results.
+            Designing interfaces where brand, motion, and engineering move as
+            one — creating digital experiences that feel clear, elevated, and
+            built for the future.
           </p>
         </div>
       </div>
@@ -63,10 +65,8 @@ const About = () => {
         <div className="title block md:-mt-36 lg:-mt-42 xl:-mt-48">
           <span className="inline-block md:w-[808px] xl:w-[624px] max-md:hidden" />
           <h2 className="offset-title inline w-full text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[110%] font-bold tracking-tighter">
-            Daksh Singh is a Jaipur-based designer and developer who moves
-            fluidly between brand thinking, product craft, and frontend
-            engineering — building things that look considered and work
-            precisely.
+            Designing tomorrow’s digital presence through motion, systems, and
+            code.
           </h2>
         </div>
       </div>
@@ -79,11 +79,9 @@ const About = () => {
       <h3 className="col-span-full md:col-start-5 xl:col-start-7 md:col-end-11 xl:pb-150!">
         <div className="wysiwyg">
           <p className="title">
-            With experience spanning early-stage startups, edtech platforms,
-            consumer apps, and creative portfolios — from brand systems and
-            product design to interactive frontends and design engineering. The
-            belief: every pixel should have a reason, and every system should
-            have a soul.
+            Building digital experiences that balance emotion with logic —
+            combining scalable systems, refined aesthetics, and interaction-led
+            storytelling.
           </p>
         </div>
       </h3>
